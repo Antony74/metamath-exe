@@ -1138,6 +1138,9 @@ void command(int argc, char *argv[])
           }
         }
         /* Do the operating system command */
+        /* The use of (void)!f() is to ignore the value on both
+          clang (which takes (void) as an ignore indicator)
+          and gcc (which doesn't but is fooled by the ! operator). */
         (void)!system(str1);
 #ifdef VAXC
         printf("\n"); /* Last line from VAX doesn't have new line */
