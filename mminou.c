@@ -94,16 +94,6 @@ flag print2(char* fmt,...)
   /* char printBuffer[PRINTBUFFERSIZE]; */ /* 19-Jun-2020 nm Deleted */
   /* 19-Jun-2020 nm */
   char *printBuffer; /* Allocated dynamically */
-  /* gcc (Debian 4.9.2-10+deb8u2) 4.9.2 gives error for ssize_t if -c99
-     is specified; gcc (GCC) 7.3.0 doesn't complain if -c99 is specified */
-  /* See https://sourceforge.net/p/predef/wiki/Compilers/ for __LCC__ */
-#ifdef __LCC__   /* 19-Jun-2020 nm ssize_t not defined for lcc compiler */
-  long bufsiz;
-#else
-  ssize_t bufsiz; /* ssize_t (signed size_t) can represent the number -1 for
-                     error checking */
-#endif
-
 
   if (backBufferPos == 0) {
     /* Initialize backBuffer - 1st time in program */
@@ -237,7 +227,7 @@ flag print2(char* fmt,...)
 
   /* 19-Jun-2020 nm Allow unlimited output size */
   va_start(ap, fmt);
-  bufsiz = vsnprintf(NULL, 0, fmt, ap); /* Get the buffer size we need */
+  int bufsiz = vsnprintf(NULL, 0, fmt, ap); /* Get the buffer size we need */
   va_end(ap);
   /* Warning: some older complilers, including lcc-win32 version 3.8 (2004),
      return -1 instead of the buffer size */
